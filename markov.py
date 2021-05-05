@@ -2,8 +2,6 @@
 import random
 from random import choice
 
-input_path = 'green-eggs.txt'
-
 def open_and_read_file(file_path):
     """Take file path as string; return text as string.
 
@@ -42,7 +40,7 @@ def make_chains(text_string):
     #split up long string into a list of individual words
     text = text_string.split()
 
-    ##keys = tuple()
+
     #loop over each word (i) in list 'text' and create tuples
     
     chains = {}
@@ -58,12 +56,6 @@ def make_chains(text_string):
         # append values to empty list for each key
         chains[bigram].append(text[i + 2])
 
-
-
-    # print(chains)
-
-    # print("*"*20)
-
     return chains
             
 
@@ -72,7 +64,7 @@ def make_chains(text_string):
     
 
 def make_text(chains):
-#     """Return text from chains."""
+    """Return text from chains."""
     #create list to add in all text that we'll string together at the end
     words = []
 
@@ -83,43 +75,43 @@ def make_text(chains):
     random_value = random.choice(value1)
     
     #create new key with first key and random value
-    new_key = key1[1] + " " + random_value 
+    new_key = (key1[1], random_value)
     
     # add key to words list
-    words.append(' '.join(key1))
-    words.append(random_value)
+    words.append(key1[0])
+    words.append(new_key[0])
+    words.append(new_key[1])
+    
     
 # create a new key with the second word in key + random value
-    
-    #loop over words list for each added key at end??
-    for key in chains.keys():
-       if key == new_key:
-        #assign value associated with new_key
-            next_value_list = chains.get(key, 0)
-        #choose a random value from value list
+        
+    while True:
+
+        #if the new key just created is in the dictionary chains
+        if new_key in chains.keys():
+        
+            #assign value associated with new_key
+            next_value_list = chains.get(new_key, 0)
+            
+            #choose a random value from value list
             next_value = random.choice(next_value_list)
-        #add chosen value into words list
+            
+            #add chosen value into words list
             words.append(next_value)
-            new_key = words[-2:-1]
-            print(words)
+            
+            #make newest pair the new_key
+            new_key = (words[-2], words[-1])                
+        
+        #once the new_key is no longer in dict, end loop  
+        else:
+            break
     
-# add new key to words list
-# use new key to repeat 
-
-  #  print(key1)    
     #convert list of words into a string
-    #return ' '.join(words)
-#FOR MARKOV CHAIN LAB
+    return ' '.join(words)
+
  
-# import random
-# d = {'VENEZUELA':'CARACAS', 'CANADA':'OTTAWA'}
-# random.choice(list(d.values()))
 
-# #to get a pair
-# country,capital = random.choice(list(d.items()))
-
-
-# input_path = 'green-eggs.txt'
+input_path = 'green-eggs.txt'
 
 # # # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
@@ -130,8 +122,5 @@ chains = make_chains(input_text)
 # # Produce random text
 random_text = make_text(chains)
 
-# print(random_text)
+print(random_text)
 
- #keys = chains.keys()
-    #key1 = keys[0]
-    #values = chains.values()            key1, value1 = list(chains.items())[new_key]
